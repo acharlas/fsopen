@@ -6,21 +6,26 @@ const Button = ({text, handleClick}) => (
 
 const Statistic = ({value, text}) => {
   return(
-    <div>{text} {value}</div>
+  <tr>
+    <td>{text}</td>
+    <td>{Number.isInteger(value) ? value : value.toFixed(2)}</td>
+  </tr>
 )}
 
 const Statistics = ({good, neutral, bad}) => {
   const total = good + neutral + bad
   if(total !== 0) {
   return(
-    <div>
+    <table>
+      <tbody>
       <Statistic value={good} text="good"/>
       <Statistic value={neutral} text="neutral"/>
       <Statistic value={bad} text="bad"/>
       <Statistic value={total} text="all"/>
       <Statistic value={(good - bad) / total} text="average"/>
-      <Statistic value={good / total} text="positive"/>
-    </div>
+      <Statistic value={good / total} text="positive %"/>
+      </tbody>
+    </table>
   )}
   return (
     <p>No feedback given</p>
