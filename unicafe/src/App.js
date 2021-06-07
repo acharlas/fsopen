@@ -8,6 +8,7 @@ const Display = ({value, text}) => <div>{text} {value}</div>
 
 const Statistics = ({good, neutral, bad}) => {
   const all = good + neutral + bad
+  if(all !== 0) {
   return(
     <div>
       <Display value={good} text="good"/>
@@ -17,6 +18,9 @@ const Statistics = ({good, neutral, bad}) => {
       <Display value={(good - bad) / all} text="average"/>
       <Display value={good / all} text="positive"/>
       </div>
+  )}
+  return (
+    <p>No feedback given</p>
   )}
 
 const App = () => {
