@@ -7,8 +7,13 @@ const App = () => {
   const [countries, setCountries] = useState([])
   const [filterName, setFilterName] = useState('')
 
-  const handleEvent = (handleFunction) => {
+  const handleChangeEvent = (handleFunction) => {
     const handler = (event) => (handleFunction(event.target.value))
+    return handler
+  }
+
+  const handleClickEvent = (handleFunction) => {
+    const handler = (event) => handleFunction(event.target.id)
     return handler
   }
 
@@ -24,11 +29,13 @@ const App = () => {
       const regex = new RegExp(filterName, 'i')
       return(regex.test(country.name))
     })
-
   return (
     <div>
-      <FilterForm handleFilterChange={handleEvent(setFilterName)} clearFilter={() => setFilterName('')} filter={filterName}/>
-      <CountriesToShow countriesToShow={countriesToShow}/>
+      <FilterForm 
+				handleFilterChange={handleChangeEvent(setFilterName)} 
+				clearFilter={() => setFilterName('')} 
+				filter={filterName}/>
+      <CountriesToShow countriesToShow={countriesToShow} handleClick={handleClickEvent(setFilterName)}/>
     </div>
   )
 }
