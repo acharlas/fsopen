@@ -28,10 +28,13 @@ const App = () => {
     event.preventDefault()
     
     if (persons.some(person => person.name === newName)) {
-      window.alert(`${newName} is already added to phonebook`)
-    }
-    else if (persons.some(person => person.number === newNumber)) {
-      window.alert(`${newNumber} is already set to someone`)
+      if(window.confirm(`${newName} is already added to phonebook`)) {
+        const person = persons.find(person => person.name === newName)
+        const changePerson = {...person, number: newNumber}
+        personServices
+          .update(person.id, changePerson)
+          .then(data => setPersons(persons.map(person => person.name !== newName ? person : data)))
+      }
     }
     else {
       const personObject = {
