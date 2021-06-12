@@ -19,7 +19,10 @@ const App = () => {
 
   const personsToShow = filterName === '' 
     ? persons 
-    : persons.filter(person => person.name.includes(filterName))
+    : persons.filter(person => {
+      const regex = new RegExp(filterName, 'i')
+      return(regex.test(person.name))
+    })
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -44,10 +47,17 @@ const App = () => {
   }
 
   useEffect(() => {
-    
     personServices.getAll()
     .then(data => setPersons(data))
   }, [])
+
+  const deleteNumber = (id, name) => {
+    if(window.confirm(`Do you really want to delete ${name}`)) {
+      personServices
+       .deleteNum(id)
+        .then(setPersons(persons.filter(n => n.id !== id)))
+    }
+  }
 
   return (
     <div>
@@ -62,7 +72,9 @@ const App = () => {
         newNumber={newNumber}
       />
       <h2>Numbers</h2>
-      <Numbers personsToShow={personsToShow}/>
+      {personsToShow.map(person => 
+        <Numbers key={person.id} person={person} deleteNumber={() => deleteNumber(person.id, person.name)}/>
+        )}
     </div>
   )
 }
